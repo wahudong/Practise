@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from .models import List
-from .forms import ListForm
+from .forms import ListForm, CreateUserForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+
+from django.contrib import messages
 
 # Create your views here.
 
@@ -56,3 +60,22 @@ def edit(request, list_id):
   else:
     item = List.objects.get(pk=list_id)
     return render(request, 'edit.html', {'item':item})
+
+def register(request):
+  form = CreateUserForm()
+
+  if request.method == 'POST':
+    form = CreateUserForm(request.POST)
+    if form.is_valid():
+      form.save()
+      user = form.cleaned_data.get('username')
+      messages.success(request, 'Account was created for ' + user)
+      return redirect('login')
+
+  context={'form':form}
+  return render(request, 'register.html', context)
+
+
+def login(request):
+  context={}
+  return render(request, 'login.html', context)
