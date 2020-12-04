@@ -12,6 +12,7 @@ urlpatterns = [
     path('uncross/<list_id>', views.uncross, name='uncross'),
     path('edit/<list_id>', views.edit, name='edit'),
     path('register/', views.register, name="register"),
-    path('login/', views.login, name="login"),
+    path('login/', views.loginPage, name="login"),
+    path('logout/', views.logoutUser, name="logout"),
 
 ]

@@ -31,6 +31,19 @@
             <a class="nav-link" href="{% url 'about' %}">About</a>
           </li>
 
+          <li class="nav-item">
+
+              {%if request.user.username != '' %}
+
+              <span style="color: white;">Hello, {{request.user.username}}</span>s
+
+              {% endif %}
+
+
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown
@@ -43,11 +56,14 @@
             </div>
           </li>
 
+
           <!-- <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li> -->
-
         </ul>
+
+
+
         <form class="form-inline my-2 my-lg-0" method="POST">
           {% csrf_token %}
           <input class="form-control mr-sm-2" type="search" placeholder="Add to list" aria-label="Search" name="item">

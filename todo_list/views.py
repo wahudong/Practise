@@ -6,7 +6,11 @@ from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 
+from django.contrib.auth import authenticate, login, logout
+
 from django.contrib import messages
+
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -24,6 +28,7 @@ def home(request):
     all_items = List.objects.all
     return render(request, 'home.html', {'all_items':all_items})
 
+@login_required(login_url='login')
 def about(request):
   context = {'first_name':'BenBen', 'last_name': 'Wang'}
   return render(request, 'about.html', context )
@@ -76,6 +81,21 @@ def register(request):
   return render(request, 'register.html', context)
 
 
-def login(request):
+def loginPage(request):
+  if request.method == 'POST':
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password= password)
+
+    if user is not None:
+      login(request,user)
+      return redirect('home')
+    else:
+      messages.info(request,'Username OR password is incorrect')
+
   context={}
   return render(request, 'login.html', context)
+
+def logoutUser(request):
+  logout(request)
+  return redirect('login')
